@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>YT Turbo</title>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    margin: 0;
+    width: 330px;
+    font: 13px/1.35 system-ui, "Segoe UI", sans-serif;
+    background: #0f0f0f;
+    color: #f1f1f1;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 12px 14px 8px;
+    border-bottom: 1px solid #272727;
+  }
+  header b { font-size: 14px; }
+  header span { color: #aaa; font-size: 11px; }
+  .list { padding: 6px 6px 2px; max-height: 430px; overflow-y: auto; }
+  label {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 8px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  label:hover { background: #1c1c1c; }
+  label input { margin: 2px 0 0; accent-color: #ff0033; }
+  .t { font-weight: 500; }
+  .d { color: #9a9a9a; font-size: 11px; margin-top: 2px; }
+  .sub { margin-left: 22px; }
+  footer {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px 12px;
+    border-top: 1px solid #272727;
+  }
+  button {
+    flex: 1;
+    padding: 7px 10px;
+    border: 1px solid #3a3a3a;
+    border-radius: 18px;
+    background: #212121;
+    color: #f1f1f1;
+    font: inherit;
+    cursor: pointer;
+  }
+  button:hover { background: #2d2d2d; }
+  button.primary { background: #ff0033; border-color: #ff0033; color: #fff; }
+  .note { padding: 0 14px 10px; color: #7a7a7a; font-size: 11px; }
+</style>
+</head>
+<body>
+<header><b>YT Turbo</b><span>interface without delays</span></header>
+
+<div class="list">
+  <label><input type="checkbox" id="noAnim"><span><span class="t">Remove all animations</span><span class="d">Transitions and animations are cut to 1 ms. transitionend still fires, so YouTube keeps working normally.</span></span></label>
+  <label class="sub"><input type="checkbox" id="keepSpinner"><span><span class="t">Keep loading spinners</span><span class="d">Otherwise the loading indicator flickers.</span></span></label>
+  <label class="sub"><input type="checkbox" id="hardAnim"><span><span class="t">Hard mode: animation/transition none</span><span class="d">Truly zero. Spinners freeze, and now and then an element can get stuck halfway.</span></span></label>
+  <label><input type="checkbox" id="noRipple"><span><span class="t">No click ripples</span><span class="d">The button ripple effect is removed entirely.</span></span></label>
+  <label><input type="checkbox" id="noAmbient"><span><span class="t">Disable ambient mode</span><span class="d">The glow around the player samples video frames on the GPU nonstop. The main source of lag in fullscreen.</span></span></label>
+  <label><input type="checkbox" id="noViewTransitions"><span><span class="t">Disable View Transitions</span><span class="d">YouTube snapshots the description and the right column on every layout change. The most expensive part of going fullscreen or into theater mode.</span></span></label>
+  <label><input type="checkbox" id="fastFullscreen"><span><span class="t">Fast fullscreen</span><span class="d">Removes transitions from the player and the columns, and stops hidden blocks from rendering.</span></span></label>
+  <label><input type="checkbox" id="instantPause"><span><span class="t">Instant click to pause</span><span class="d">YouTube waits 305 ms to see whether it is a double click. We toggle it ourselves: 7-50 ms. A double click still opens fullscreen.</span></span></label>
+  <label><input type="checkbox" id="warmSettings"><span><span class="t">Prewarm the settings panel</span><span class="d">The gear panel is built in advance and invisibly, so the first click stops lagging.</span></span></label>
+  <label><input type="checkbox" id="eagerComments"><span><span class="t">Comments right away</span><span class="d">Loading starts when the video opens, not when you scroll down.</span></span></label>
+  <label><input type="checkbox" id="offscreenSkip"><span><span class="t">Do not render offscreen content</span><span class="d">content-visibility for feeds and comments. Scrolling long lists gets noticeably lighter.</span></span></label>
+  <label><input type="checkbox" id="noHoverPreview"><span><span class="t">No hover previews</span><span class="d">Also animated covers and GIF thumbnails.</span></span></label>
+  <label><input type="checkbox" id="noBlur"><span><span class="t">No background blur</span><span class="d">backdrop-filter is expensive on every repaint.</span></span></label>
+  <label><input type="checkbox" id="instantScroll"><span><span class="t">Instant scroll</span><span class="d">No smooth scrolling to anchors or back to the top.</span></span></label>
+</div>
+
+<div class="note">Everything applies immediately. "Comments right away" and "prewarm the settings panel" take effect from the next video you open.</div>
+
+<footer>
+  <button id="reload" class="primary">Reload tab</button>
+  <button id="reset">Reset</button>
+</footer>
+
+<script src="popup.js"></script>
+</body>
+</html>
